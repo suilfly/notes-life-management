@@ -1,0 +1,29 @@
+{
+  "name": "notes-life-management",
+  "version": "1.0.0",
+  "description": "笔记&amp;生活管理平台",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.3.4"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router": "^6.25.1",
+    "rollup-plugin-react-scoped-css": "^1.0.0",
+    "sass": "^1.77.8",
+    "typescript": "^5.5.4"
+  }
+}
