@@ -1,0 +1,12 @@
+html[data-theme='light']:root {
+  --theme-background-color: #fff;
+}
+
+html[data-theme='dark']:root {
+  --theme-background-color: rgb(25, 25, 25);
+  --theme-nav-backgorund-color: rgb(32, 32, 32);
+  --theme-normal-border-color: rgb(43, 43, 43);
+  --theme-normal-font-color: rgb(193, 193, 193);
+  --theme-normal-icon-fill: rgb(155, 155, 155);
+  --theme-nav-hover-background-color: rgba(255, 255, 255, 0.055);
+}
