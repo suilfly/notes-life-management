@@ -1,0 +1,50 @@
+.note-visit-card {
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    box-shadow: rgba(255, 255, 255, 0.05) 0 0 0 1px inset;
+    cursor: pointer;
+  }
+
+  .card-top-wrapper {
+    height: 44px;
+
+    .top-bg {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px 16px 0 0;
+      object-position: center 50%;
+    }
+
+    .top-bg-holder {
+      height: 100%;
+      border-radius: 16px 16px 0 0;
+      background-color: rgb(44, 44, 44);
+    }
+  }
+
+  .card-info-wrapper {
+    position: relative;
+    flex: 1;
+
+    .info-logo {
+      width: 26px;
+      height: 26px;
+      object-fit: cover;
+      border-radius: 4px;
+      position: absolute;
+      left: 16px;
+      top: -12px;
+    }
+
+    .info-title {
+      padding: 10px 16px 12px;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+  }
+}

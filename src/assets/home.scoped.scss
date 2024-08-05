@@ -1,0 +1,44 @@
+.note-home-wrapper {
+  flex: 1;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    'Segoe UI Variable Display', 'Segoe UI', Helvetica, 'Apple Color Emoji',
+    Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+  display: grid;
+  grid-template-rows: 104px 1fr;
+  grid-template-columns: [col1-start] 109px [content-start] 900px [content-end] 1fr;
+  gap: 24px;
+
+  > header {
+    width: 100%;
+    height: 104px;
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.81);
+    margin-top: 64px;
+    padding: 0 48px;
+    text-align: center;
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
+
+  .note-recently-visit-wrapper {
+    .tag {
+      font-size: 12px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      text-indent: 2px;
+    }
+  }
+
+  .note-home-content {
+    grid-column-start: 2;
+    grid-column-end: 3;
+
+    .note-recently-visit {
+      display: flex;
+      gap: 16px;
+    }
+  }
+}

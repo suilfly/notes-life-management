@@ -1,3 +1,9 @@
+import TextEditor from '@/components/TextEditor/index.tsx';
+
 export default function Editor() {
-  return <div></div>;
+  return (
+    <div className="">
+      <TextEditor />
+    </div>
+  );
 }

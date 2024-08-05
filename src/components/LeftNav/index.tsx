@@ -15,6 +15,7 @@ const contents = [
   {
     name: '主页',
     icon: homeIcon,
+    path: '/home',
   },
   {
     name: '回收站',
@@ -36,9 +37,9 @@ export default function LeftNav(props: LeftNavProps) {
     props
   );
   function renderByType(menu: NavObject, index: number) {
-    if (prop.isRouteNav) {
+    if (menu.path) {
       return (
-        <Link to={menu.path} key={index}>
+        <Link className="note-nav-item" to={menu.path} key={index}>
           {renderMenuItem(menu)}
         </Link>
       );

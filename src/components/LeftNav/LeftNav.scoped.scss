@@ -3,6 +3,7 @@
   background-color: var(--theme-nav-backgorund-color);
   border-right: 1px solid var(--theme-normal-border-color);
   padding: 10px;
+  box-sizing: border-box;
 
   .note-nav-item {
     display: flex;
@@ -11,6 +12,8 @@
     align-items: center;
     box-sizing: border-box;
     cursor: pointer;
+    text-decoration: none;
+    color: rgb(193, 193, 193);
 
     &:hover {
       border-radius: 6px;
