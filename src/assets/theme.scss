@@ -10,3 +10,7 @@ html[data-theme='dark']:root {
   --theme-normal-icon-fill: rgb(155, 155, 155);
   --theme-nav-hover-background-color: rgba(255, 255, 255, 0.055);
 }
+
+html:root {
+  --note-font-color: red;
+}

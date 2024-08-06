@@ -61,6 +61,6 @@ export default function TextEditor() {
     return () => {
       clearNodes();
     };
-  });
+  }, []);
   return <div id={id} className="note-editor" contentEditable></div>;
 }
