@@ -1,3 +1,15 @@
 [note-bold] {
   font-weight: 700;
 }
+
+note-p {
+  width: 100%;
+  height: 26px;
+  display: block;
+
+  note-text {
+    display: inline;
+    line-height: 26px;
+    white-space: pre;
+  }
+}

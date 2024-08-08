@@ -6,6 +6,7 @@ export default defineConfig({
   base: './',
   plugins: [react(), reactScopedCssPlugin()],
   resolve: {
+    extensions: ['.ts', '.tsx'],
     alias: [
       {
         find: '@/',

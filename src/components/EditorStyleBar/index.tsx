@@ -1,14 +1,36 @@
 import './style.scoped.scss';
 
-const iconList = [
-  '#note-b-text',
-  '#note-i-text',
-  '#note-s-text',
-  '#note-u-text',
-  '#note-text-color',
-];
-
 export default function EditorStyleBar() {
+  const iconList = [
+    {
+      id: '#note-b-text',
+      callback: () => {
+        getCursorSelection();
+      },
+    },
+    {
+      id: '#note-i-text',
+      callback: getCursorSelection,
+    },
+    {
+      id: '#note-s-text',
+      callback: getCursorSelection,
+    },
+    {
+      id: '#note-u-text',
+      callback: getCursorSelection,
+    },
+    {
+      id: '#note-text-color',
+      callback: getCursorSelection,
+    },
+  ];
+
+  function getCursorSelection() {
+    const selection = window.getSelection();
+    console.log(selection.toString());
+  }
+
   return (
     <div
       className="note-editor-bar-wrapper"
@@ -20,9 +42,13 @@ export default function EditorStyleBar() {
     >
       {iconList.map((item) => {
         return (
-          <span key={item} className="note-icon-wrapper">
+          <span
+            key={item.id}
+            className="note-icon-wrapper"
+            onClick={item.callback}
+          >
             <svg className="note-icon-symbol" aria-hidden="true">
-              <use xlinkHref={item}></use>
+              <use xlinkHref={item.id}></use>
             </svg>
           </span>
         );
