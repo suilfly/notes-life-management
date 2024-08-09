@@ -1,12 +1,10 @@
 import './style.scoped.scss';
 
-export default function EditorStyleBar() {
+export default function EditorStyleBar({ clickButtonHandle }) {
   const iconList = [
     {
       id: '#note-b-text',
-      callback: () => {
-        getCursorSelection();
-      },
+      callback: getCursorSelection,
     },
     {
       id: '#note-i-text',
@@ -26,9 +24,8 @@ export default function EditorStyleBar() {
     },
   ];
 
-  function getCursorSelection() {
-    const selection = window.getSelection();
-    console.log(selection.toString());
+  function getCursorSelection(id: string) {
+    clickButtonHandle(id);
   }
 
   return (
@@ -45,7 +42,7 @@ export default function EditorStyleBar() {
           <span
             key={item.id}
             className="note-icon-wrapper"
-            onClick={item.callback}
+            onClick={() => item.callback(item.id)}
           >
             <svg className="note-icon-symbol" aria-hidden="true">
               <use xlinkHref={item.id}></use>

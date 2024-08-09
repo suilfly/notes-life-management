@@ -5,3 +5,11 @@ export interface TextNodeObject {
   attributes?: string[];
   style?: React.CSSProperties;
 }
+
+export interface SelectRangeObject {
+  startContainer: Element;
+  endContainer: Element;
+  startPart: string;
+  selectedPart: string;
+  endPart: string;
+}
