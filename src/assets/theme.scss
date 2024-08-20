@@ -1,5 +1,47 @@
+$theme-green-color: #6c9b7d;
+$theme-blue-color: #5b97bd;
+$theme-red-color: #e16f64;
+
+$colorMap: (
+  'red': $theme-green-color,
+  'blue': $theme-blue-color,
+  'green': $theme-red-color,
+);
+$hslMap: (
+  1: 1%,
+  2: 3%,
+  3: 5%,
+  4: 7%,
+  5: 9%,
+  6: 10%,
+  7: 20%,
+  8: 30%,
+  9: 40%,
+  10: 50%,
+  11: 60%,
+  12: 70%,
+  13: 80%,
+);
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
 html[data-theme='light']:root {
   --theme-background-color: #fff;
+
+  @each $themeColor, $color in $colorMap {
+    .#{$themeColor} {
+      @each $i, $percentage in $hslMap {
+        .bg-color#{$i} {
+          background-color: tint($color, $percentage);
+        }
+      }
+    }
+  }
 }
 
 html[data-theme='dark']:root {
@@ -9,6 +51,16 @@ html[data-theme='dark']:root {
   --theme-normal-font-color: rgb(193, 193, 193);
   --theme-normal-icon-fill: rgb(155, 155, 155);
   --theme-nav-hover-background-color: rgba(255, 255, 255, 0.055);
+
+  @each $themeColor, $color in $colorMap {
+    .#{$themeColor} {
+      @each $i, $percentage in $hslMap {
+        .bg-color#{$i} {
+          background-color: shade($color, $percentage);
+        }
+      }
+    }
+  }
 }
 
 html:root {

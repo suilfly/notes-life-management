@@ -1,0 +1,35 @@
+.todo-board-wrapper {
+  display: flex;
+
+  .type-item-wrapper {
+    .type-container {
+      width: 320px;
+      padding: 0 5px;
+      border-radius: 5px;
+      padding: 8px;
+    }
+    .add-one {
+      width: 100%;
+      height: 32px;
+    }
+
+    .list-item {
+      width: 320px;
+      height: 38px;
+      border-radius: 4px;
+
+      .task-item {
+        text-decoration: none;
+        color: var(--theme-normal-font-color);
+      }
+    }
+
+    .list-item[clone] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+  }
+}

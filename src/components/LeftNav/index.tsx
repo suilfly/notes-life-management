@@ -3,6 +3,7 @@ import searchIcon from '@/assets/img/search.svg';
 import homeIcon from '@/assets/img/home.svg';
 import settingIcon from '@/assets/img/setting.svg';
 import trashIcon from '@/assets/img/trash.svg';
+import componentIcon from '@/assets/img/component.svg';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { NavObject, LeftNavProps } from './types';
@@ -24,6 +25,11 @@ const contents = [
   {
     name: '设置',
     icon: settingIcon,
+  },
+  {
+    name: '组件',
+    icon: componentIcon,
+    path: '/components',
   },
 ];
 

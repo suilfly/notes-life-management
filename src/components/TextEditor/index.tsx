@@ -18,6 +18,24 @@ const styleMap = new Map<string, React.CSSProperties>([
       fontStyle: 'italic',
     },
   ],
+  [
+    '#note-s-text',
+    {
+      textDecoration: 'line-through',
+    },
+  ],
+  [
+    '#note-u-text',
+    {
+      textDecoration: 'underline',
+    },
+  ],
+  [
+    '#note-text-color',
+    {
+      color: 'var(--note-font-color)',
+    },
+  ],
 ]);
 
 let selectedRange: SelectRangeObject | null = null;
