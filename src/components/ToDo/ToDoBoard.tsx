@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import './style.scoped.scss';
 
 const img = new Image();
@@ -40,37 +40,39 @@ function onDragOverHandle(e: DragEvent) {
   }
 }
 
-function onDragEndHandle(e) {
-  cloneDom.remove();
-  cloneDom = null;
+function onDragEndHandle() {
+  if (cloneDom) {
+    cloneDom.remove();
+    cloneDom = null;
+  }
 }
 
-function onDropHandle(e: DragEvent) {
-  e.preventDefault();
-  const target = e.target as HTMLElement;
-  const dropBox = target.closest('.list-item');
-  const fromId = cloneDom.id;
-  const toId = dropBox.id;
-
-  console.log(fromId, toId);
-}
-
-function addDragEvent() {
-  document.body.addEventListener('dragstart', onDrageStartHandle);
-  document.body.addEventListener('dragover', onDragOverHandle);
-  document.body.addEventListener('dragend', onDragEndHandle);
-  document.body.addEventListener('drop', onDropHandle);
-}
-
-function removeDragEvent() {
-  document.body.removeEventListener('dragstart', onDrageStartHandle);
-  document.body.removeEventListener('dragover', onDragOverHandle);
-  document.body.removeEventListener('dragend', onDragEndHandle);
-  document.body.removeEventListener('drop', onDropHandle);
-}
-
-export default function ToDoBoard({ typeList }) {
+export default function ToDoBoard({ typeList, updateHandle }) {
   const todoBoardDom = useRef<HTMLDivElement>(null);
+  const onDropHandle = useCallback((e: DragEvent) => {
+    e.preventDefault();
+    const target = e.target as HTMLElement;
+    const dropBox = target.closest('.list-item');
+    const fromId = cloneDom.id;
+    const toId = dropBox.id;
+    cloneDom.remove();
+    cloneDom = null;
+    updateHandle(fromId, toId, 'after');
+  }, []);
+
+  const addDragEvent = useCallback(() => {
+    document.body.addEventListener('dragstart', onDrageStartHandle);
+    document.body.addEventListener('dragover', onDragOverHandle);
+    document.body.addEventListener('dragend', onDragEndHandle);
+    document.body.addEventListener('drop', onDropHandle);
+  }, []);
+
+  const removeDragEvent = useCallback(() => {
+    document.body.removeEventListener('dragstart', onDrageStartHandle);
+    document.body.removeEventListener('dragover', onDragOverHandle);
+    document.body.removeEventListener('dragend', onDragEndHandle);
+    document.body.removeEventListener('drop', onDropHandle);
+  }, []);
 
   function renderContent(list) {
     if (!list) return;
@@ -82,7 +84,6 @@ export default function ToDoBoard({ typeList }) {
             <p>
               <span>{li.name}</span>
             </p>
-
             <div>
               <p>
                 <span>{li.createdTime}</span>
@@ -108,6 +109,7 @@ export default function ToDoBoard({ typeList }) {
       {typeList.map((item) => {
         return (
           <div
+            id={item.id}
             key={item.id}
             className={`type-item-wrapper ${item.colorClassName}`}
           >

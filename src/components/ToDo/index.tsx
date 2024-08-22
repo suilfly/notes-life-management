@@ -36,6 +36,11 @@ export default function ToDo() {
           createdTime: '2024-08-15',
           id: generateRandomString(),
         },
+        {
+          name: '写作业写作业d写作业',
+          createdTime: '2024-08-15',
+          id: generateRandomString(),
+        },
       ],
     },
     {
@@ -48,12 +53,59 @@ export default function ToDo() {
           createdTime: '2024-08-15',
           id: generateRandomString(),
         },
+        {
+          name: '写作业写作s业写作业',
+          createdTime: '2024-08-15',
+          id: generateRandomString(),
+        },
       ],
     },
   ]);
+
+  /**
+   * @param fromId 被拖拽项的id
+   * @param toId 放置的项的id
+   * @param position 放置在前还是后，'before', 'after'
+   */
+  function updateList(fromId: string, toId: string, position: string) {
+    if (fromId === toId) return;
+
+    let from = {
+      index: null,
+      parentIndex: null,
+    };
+    let to = {
+      index: null,
+      parentIndex: null,
+    };
+
+    todoClass.forEach((type, index) => {
+      if (!from.index || from.index === -1) {
+        from.index = type.children.findIndex((item) => item.id === fromId);
+
+        from.index !== -1 && (from.parentIndex = index);
+      }
+
+      if (!to.index || to.index === -1) {
+        to.index = type.children.findIndex((item) => item.id === toId);
+
+        to.index !== -1 && (to.parentIndex = index);
+      }
+    });
+
+    console.log(from, to);
+
+    const fromItem = todoClass[from.parentIndex].children.splice(
+      from.index,
+      1
+    )[0];
+    todoClass[to.parentIndex].children.splice(to.index, 0, fromItem);
+    setTodoClass(Array.from(todoClass));
+  }
+
   return (
     <div>
-      <ToDoBoard typeList={todoClass} />
+      <ToDoBoard typeList={todoClass} updateHandle={updateList} />
     </div>
   );
 }
