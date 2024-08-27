@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import './style.scoped.scss';
+import { todoChildObject, ToDoItemObject } from './types';
 
 const img = new Image();
 let cloneDom: HTMLElement;
@@ -26,18 +27,8 @@ function onDrageStartHandle(e: DragEvent) {
   root.appendChild(cloneDom);
 }
 
-function replaceDragStyle(e) {
+function replaceDragStyle(e: DragEvent) {
   e.dataTransfer.setDragImage(img, 0, 0);
-}
-
-function onDragOverHandle(e: DragEvent) {
-  e.preventDefault();
-
-  if (cloneDom) {
-    cloneDom.style.transform = `translate3d(${
-      e.clientX - startOffset.offsetX
-    }px, ${e.clientY - startOffset.offsetY}px, 0)`;
-  }
 }
 
 function onDragEndHandle() {
@@ -47,17 +38,65 @@ function onDragEndHandle() {
   }
 }
 
+function setImgBeforeDrag(img: HTMLImageElement) {
+  img.src =
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' %3E%3Cpath /%3E%3C/svg%3E";
+}
+
 export default function ToDoBoard({ typeList, updateHandle }) {
-  const todoBoardDom = useRef<HTMLDivElement>(null);
+  const dragHoverType = useRef('after');
+
   const onDropHandle = useCallback((e: DragEvent) => {
     e.preventDefault();
     const target = e.target as HTMLElement;
     const dropBox = target.closest('.list-item');
     const fromId = cloneDom.id;
     const toId = dropBox.id;
+
+    if (dropBox.classList.contains('drag-target')) {
+      dropBox.classList.remove('drag-target', dragHoverType.current);
+    }
+
     cloneDom.remove();
     cloneDom = null;
-    updateHandle(fromId, toId, 'after');
+    updateHandle(fromId, toId, dragHoverType.current);
+  }, []);
+
+  const onDragOverHandle = useCallback((e: DragEvent) => {
+    e.preventDefault();
+    const dragOverDom = (e.target as HTMLElement).closest(
+      '.list-item'
+    ) as HTMLElement;
+
+    if (cloneDom) {
+      cloneDom.style.transform = `translate3d(${
+        e.clientX - startOffset.offsetX
+      }px, ${e.clientY - startOffset.offsetY}px, 0)`;
+    }
+    if (dragOverDom) {
+      if (dragOverDom.classList.contains('drag-target')) {
+        dragOverDom.classList.remove('drag-target', dragHoverType.current);
+      }
+
+      const offsetTop = dragOverDom.offsetTop;
+      const height = dragOverDom.clientHeight;
+      const dragTop = e.clientY - startOffset.offsetY;
+      if (dragTop < offsetTop + height / 3) {
+        dragHoverType.current = 'before';
+      } else {
+        dragHoverType.current = 'after';
+      }
+
+      if (cloneDom.id !== dragOverDom.id) {
+        dragOverDom.classList.add('drag-target', dragHoverType.current);
+      }
+    }
+  }, []);
+
+  const onDragLeaveHandle = useCallback((e: DragEvent) => {
+    const leaveDom = e.target as HTMLElement;
+    const rootDom = leaveDom.closest('.list-item');
+    rootDom.classList.remove('drag-target', dragHoverType.current);
   }, []);
 
   const addDragEvent = useCallback(() => {
@@ -65,6 +104,7 @@ export default function ToDoBoard({ typeList, updateHandle }) {
     document.body.addEventListener('dragover', onDragOverHandle);
     document.body.addEventListener('dragend', onDragEndHandle);
     document.body.addEventListener('drop', onDropHandle);
+    document.body.addEventListener('dragleave', onDragLeaveHandle);
   }, []);
 
   const removeDragEvent = useCallback(() => {
@@ -72,9 +112,10 @@ export default function ToDoBoard({ typeList, updateHandle }) {
     document.body.removeEventListener('dragover', onDragOverHandle);
     document.body.removeEventListener('dragend', onDragEndHandle);
     document.body.removeEventListener('drop', onDropHandle);
+    document.body.removeEventListener('dragleave', onDragLeaveHandle);
   }, []);
 
-  function renderContent(list) {
+  function renderContent(list: todoChildObject[]) {
     if (!list) return;
 
     return list.map((li, index) => {
@@ -84,11 +125,9 @@ export default function ToDoBoard({ typeList, updateHandle }) {
             <p>
               <span>{li.name}</span>
             </p>
-            <div>
-              <p>
-                <span>{li.createdTime}</span>
-              </p>
-            </div>
+            <p>
+              <span>{li.createdTime}</span>
+            </p>
           </a>
         </li>
       );
@@ -96,8 +135,7 @@ export default function ToDoBoard({ typeList, updateHandle }) {
   }
 
   useEffect(() => {
-    img.src =
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' %3E%3Cpath /%3E%3C/svg%3E";
+    setImgBeforeDrag(img);
     addDragEvent();
     return () => {
       removeDragEvent();
@@ -105,8 +143,8 @@ export default function ToDoBoard({ typeList, updateHandle }) {
   }, []);
 
   return (
-    <div className="todo-board-wrapper" ref={todoBoardDom}>
-      {typeList.map((item) => {
+    <div className="todo-board-wrapper">
+      {typeList.map((item: ToDoItemObject) => {
         return (
           <div
             id={item.id}
@@ -114,9 +152,12 @@ export default function ToDoBoard({ typeList, updateHandle }) {
             className={`type-item-wrapper ${item.colorClassName}`}
           >
             <div className="bg-color13 type-container">
-              <span>{item.name}</span>
+              <span className="task-name bg-color10">
+                <i className="bg-color3"></i>
+                {item.name}
+              </span>
               {renderContent(item?.children)}
-              <p className="add-one font-color">+ new</p>
+              <p className="add-one theme-font-color">+ new</p>
             </div>
           </div>
         );

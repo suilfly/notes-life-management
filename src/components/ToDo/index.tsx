@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import ToDoBoard from './ToDoBoard';
 import { generateRandomString } from '@/utils/index.ts';
+import { ToDoItemObject } from './types';
 
 export default function ToDo() {
-  const [todoClass, setTodoClass] = useState([
+  const [todoClass, setTodoClass] = useState<Array<ToDoItemObject>>([
     {
       id: generateRandomString(),
       name: 'ToDo',
@@ -80,26 +81,30 @@ export default function ToDo() {
     };
 
     todoClass.forEach((type, index) => {
-      if (!from.index || from.index === -1) {
+      if (from.index === null || from.index === -1) {
         from.index = type.children.findIndex((item) => item.id === fromId);
 
         from.index !== -1 && (from.parentIndex = index);
       }
 
-      if (!to.index || to.index === -1) {
+      if (to.index === null || to.index === -1) {
         to.index = type.children.findIndex((item) => item.id === toId);
 
         to.index !== -1 && (to.parentIndex = index);
       }
     });
 
-    console.log(from, to);
-
     const fromItem = todoClass[from.parentIndex].children.splice(
       from.index,
       1
     )[0];
-    todoClass[to.parentIndex].children.splice(to.index, 0, fromItem);
+
+    todoClass[to.parentIndex].children.splice(
+      position === 'before' ? to.index : to.index + 1,
+      0,
+      fromItem
+    );
+
     setTodoClass(Array.from(todoClass));
   }
 

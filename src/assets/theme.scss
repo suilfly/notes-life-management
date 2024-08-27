@@ -40,6 +40,10 @@ html[data-theme='light']:root {
           background-color: tint($color, $percentage);
         }
       }
+
+      .theme-font-color {
+        color: $color;
+      }
     }
   }
 }
@@ -58,6 +62,10 @@ html[data-theme='dark']:root {
         .bg-color#{$i} {
           background-color: shade($color, $percentage);
         }
+      }
+
+      .theme-font-color {
+        color: $color;
       }
     }
   }
