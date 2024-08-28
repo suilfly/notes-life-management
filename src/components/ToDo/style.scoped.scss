@@ -51,8 +51,31 @@
         text-decoration: none;
         color: var(--theme-normal-font-color);
 
-        > p {
+        .task-row {
+          display: flex;
+          align-items: center;
           padding: 8px 10px 6px 6px;
+
+          input {
+            border: none;
+            background-color: transparent;
+            outline: none;
+            flex: 1;
+            color: var(--theme-normal-font-color);
+          }
+
+          .icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--theme-normal-icon-fill);
+            margin: 3px 4px 2px 0;
+          }
+
+          .calendar-icon {
+            width: 14px;
+            height: 14px;
+            margin: 0 6px 0 2px;
+          }
         }
       }
     }

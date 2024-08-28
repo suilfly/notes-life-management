@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import ToDoBoard from './ToDoBoard';
 import { generateRandomString } from '@/utils/index.ts';
-import { ToDoItemObject } from './types';
+import { editParameter, ToDoItemObject } from './types';
 
 export default function ToDo() {
-  const [todoClass, setTodoClass] = useState<Array<ToDoItemObject>>([
+  const [todoClass, setTodoClass] = useState<ToDoItemObject[]>([
     {
       id: generateRandomString(),
       name: 'ToDo',
@@ -108,9 +108,48 @@ export default function ToDo() {
     setTodoClass(Array.from(todoClass));
   }
 
+  function addOne(id: string) {
+    const findIndex = todoClass.findIndex((item) => item.id === id);
+
+    if (findIndex !== -1) {
+      todoClass[findIndex].children.push({
+        id: generateRandomString(),
+        template: true,
+      });
+
+      setTodoClass(Array.from(todoClass));
+    }
+  }
+
+  function editOne(param: editParameter) {
+    const { id } = param;
+    todoClass.forEach((classes) => {
+      const temp = classes.children.find((item) => item.id === id);
+      if (temp) {
+        temp.name = param?.editName;
+        temp.createdTime = param?.editTime;
+        temp.template = null;
+      }
+    });
+    setTodoClass(Array.from(todoClass));
+  }
+
+  function updateHandle(type: string, ...args) {
+    switch (type) {
+      case 'drag':
+        updateList(...(args as [string?, string?, string?]));
+        break;
+      case 'add':
+        addOne(...(args as [string]));
+        break;
+      case 'edit':
+        editOne(...(args as [editParameter]));
+    }
+  }
+
   return (
     <div>
-      <ToDoBoard typeList={todoClass} updateHandle={updateList} />
+      <ToDoBoard typeList={todoClass} updateHandle={updateHandle} />
     </div>
   );
 }

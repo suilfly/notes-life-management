@@ -44,7 +44,10 @@ function setImgBeforeDrag(img: HTMLImageElement) {
 }
 
 export default function ToDoBoard({ typeList, updateHandle }) {
+  console.log(typeList);
   const dragHoverType = useRef('after');
+  const editName = useRef('');
+  const editTime = useRef('');
 
   const onDropHandle = useCallback((e: DragEvent) => {
     e.preventDefault();
@@ -53,13 +56,13 @@ export default function ToDoBoard({ typeList, updateHandle }) {
     const fromId = cloneDom.id;
     const toId = dropBox.id;
 
-    if (dropBox.classList.contains('drag-target')) {
+    if (dropBox?.classList?.contains('drag-target')) {
       dropBox.classList.remove('drag-target', dragHoverType.current);
     }
 
     cloneDom.remove();
     cloneDom = null;
-    updateHandle(fromId, toId, dragHoverType.current);
+    updateHandle('drag', fromId, toId, dragHoverType.current);
   }, []);
 
   const onDragOverHandle = useCallback((e: DragEvent) => {
@@ -73,6 +76,7 @@ export default function ToDoBoard({ typeList, updateHandle }) {
         e.clientX - startOffset.offsetX
       }px, ${e.clientY - startOffset.offsetY}px, 0)`;
     }
+
     if (dragOverDom) {
       if (dragOverDom.classList.contains('drag-target')) {
         dragOverDom.classList.remove('drag-target', dragHoverType.current);
@@ -96,7 +100,9 @@ export default function ToDoBoard({ typeList, updateHandle }) {
   const onDragLeaveHandle = useCallback((e: DragEvent) => {
     const leaveDom = e.target as HTMLElement;
     const rootDom = leaveDom.closest('.list-item');
-    rootDom.classList.remove('drag-target', dragHoverType.current);
+    if (rootDom) {
+      rootDom.classList.remove('drag-target', dragHoverType.current);
+    }
   }, []);
 
   const addDragEvent = useCallback(() => {
@@ -115,23 +121,78 @@ export default function ToDoBoard({ typeList, updateHandle }) {
     document.body.removeEventListener('dragleave', onDragLeaveHandle);
   }, []);
 
+  function editBlurHandle(id: string) {
+    updateHandle('edit', {
+      id,
+      editName: editName.current,
+      editTime: editTime.current,
+    });
+  }
+
+  function saveEditName(e: React.FormEvent) {
+    editName.current = (e.target as HTMLInputElement).value;
+  }
+
+  function saveEditTime(e: React.FormEvent) {
+    editTime.current = (e.target as HTMLInputElement).value;
+  }
+
+  function renderTaskTemplate(id: string) {
+    return (
+      <div className="edit-type" onBlur={() => editBlurHandle(id)}>
+        <p className="task-row">
+          <svg className="icon">
+            <use xlinkHref="#edit-icon"></use>
+          </svg>
+          <input
+            autoFocus
+            placeholder="Type a name"
+            onBlur={(e) => e.stopPropagation()}
+            onInput={saveEditName}
+          />
+        </p>
+        <p className="task-row">
+          <svg className="icon calendar-icon">
+            <use xlinkHref="#calendar-icon"></use>
+          </svg>
+          <input placeholder="Add Deadline" onInput={saveEditTime} />
+        </p>
+      </div>
+    );
+  }
+
   function renderContent(list: todoChildObject[]) {
     if (!list) return;
 
     return list.map((li, index) => {
       return (
         <li className={`list-item bg-color12`} id={li.id} key={li.id}>
-          <a className="task-item" href={`/${index}`}>
-            <p>
-              <span>{li.name}</span>
-            </p>
-            <p>
-              <span>{li.createdTime}</span>
-            </p>
+          <a
+            className="task-item"
+            href={`/${index}`}
+            rel="noopener noreferer"
+            onClick={(e) => e.preventDefault()}
+          >
+            {li?.name && (
+              <p className="task-row">
+                <span>{li.name}</span>
+              </p>
+            )}
+
+            {li?.createdTime && (
+              <p className="task-row">
+                <span>{li.createdTime}</span>
+              </p>
+            )}
+            {li?.template && renderTaskTemplate(li.id)}
           </a>
         </li>
       );
     });
+  }
+
+  function addNewOne(id: string) {
+    updateHandle('add', id);
   }
 
   useEffect(() => {
@@ -157,7 +218,12 @@ export default function ToDoBoard({ typeList, updateHandle }) {
                 {item.name}
               </span>
               {renderContent(item?.children)}
-              <p className="add-one theme-font-color">+ new</p>
+              <p
+                className="add-one theme-font-color"
+                onClick={() => addNewOne(item.id)}
+              >
+                + new
+              </p>
             </div>
           </div>
         );
