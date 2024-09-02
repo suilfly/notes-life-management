@@ -7,6 +7,7 @@ import componentIcon from '@/assets/img/component.svg';
 import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router-dom';
 import { NavObject, LeftNavProps } from './types';
+import { useCallback, useState } from 'react';
 
 const contents = [
   {
@@ -26,11 +27,6 @@ const contents = [
     name: '设置',
     icon: settingIcon,
   },
-  {
-    name: '组件',
-    icon: componentIcon,
-    path: '/components',
-  },
 ];
 
 export default function LeftNav(props: LeftNavProps) {
@@ -42,6 +38,21 @@ export default function LeftNav(props: LeftNavProps) {
     },
     props
   );
+  const [isWrapShow, setIsWrapShow] = useState(false);
+  const [isNavWrapped, setIsNavWrapped] = useState(false);
+
+  const showWrapIcon = useCallback(() => {
+    setIsWrapShow(true);
+  }, []);
+
+  const hideWrapIcon = useCallback(() => {
+    setIsWrapShow(false);
+  }, []);
+
+  const wrapNavHandle = useCallback(() => {
+    setIsNavWrapped(!isNavWrapped);
+  }, [isNavWrapped]);
+
   function renderByType(menu: NavObject, index: number) {
     if (menu.path) {
       return (
@@ -78,15 +89,31 @@ export default function LeftNav(props: LeftNavProps) {
   }
 
   return (
-    <ul
+    <div
       className="note-leftnav-wrapper"
-      style={{
-        width: prop.width,
-      }}
+      onMouseEnter={showWrapIcon}
+      onMouseLeave={hideWrapIcon}
     >
-      {prop.content.map((item, index) => {
-        return renderByType(item, index);
-      })}
-    </ul>
+      <ul
+        className={`nav-list-wrapper ${isNavWrapped ? 'nav-wrapped' : ''}`}
+        style={{
+          width: prop.width,
+        }}
+      >
+        {prop.content.map((item, index) => {
+          return renderByType(item, index);
+        })}
+      </ul>
+      {(isWrapShow || isNavWrapped) && (
+        <div
+          className={`nav-wrap ${isNavWrapped ? 'nav-expand' : ''}`}
+          onClick={wrapNavHandle}
+        >
+          <svg className="arrow-icon">
+            <use xlinkHref="#left-arrow-icon"></use>
+          </svg>
+        </div>
+      )}
+    </div>
   );
 }

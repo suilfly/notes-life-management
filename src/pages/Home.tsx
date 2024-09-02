@@ -13,6 +13,10 @@ export default function Home() {
     navigator('/editor');
   }
 
+  function goToDrawBoard() {
+    navigator('/');
+  }
+
   return (
     <div className="note-home-wrapper">
       <header>Good {getTimeArea()}</header>
@@ -27,6 +31,11 @@ export default function Home() {
               title="新建页面"
               titleLogo={addIcon}
               onclickHandle={goToEditor}
+            />
+            <RecentliVisitCard
+              title="新建画板"
+              titleLogo={addIcon}
+              onclickHandle={goToDrawBoard}
             />
             <RecentliVisitCard title="kanban borad" helloBg={bg} />
           </div>

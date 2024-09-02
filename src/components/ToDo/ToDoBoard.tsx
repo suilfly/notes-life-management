@@ -44,7 +44,6 @@ function setImgBeforeDrag(img: HTMLImageElement) {
 }
 
 export default function ToDoBoard({ typeList, updateHandle }) {
-  console.log(typeList);
   const dragHoverType = useRef('after');
   const editName = useRef('');
   const editTime = useRef('');

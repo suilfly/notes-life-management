@@ -19,6 +19,7 @@
     "vite": "^5.3.4"
   },
   "dependencies": {
+    "gojs": "^3.0.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^6.25.1",

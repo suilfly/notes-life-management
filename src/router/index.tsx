@@ -3,6 +3,7 @@ import Home from '@/pages/Home.tsx';
 import Root from '@/pages/Root.tsx';
 import Editor from '@/pages/Editor.tsx';
 import Components from '@/pages/Components.tsx';
+import DrawBoard from '@/pages/DrawBoard.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: 'components',
         element: <Components />,
+      },
+      {
+        path: 'draw-board',
+        element: <DrawBoard />,
       },
     ],
   },
