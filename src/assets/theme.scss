@@ -32,6 +32,7 @@ $hslMap: (
 
 html[data-theme='light']:root {
   --theme-background-color: #fff;
+  --theme-normal-font-color: rgba(0, 0, 0, 0.5);
 
   @each $themeColor, $color in $colorMap {
     .#{$themeColor} {

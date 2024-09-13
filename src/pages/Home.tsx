@@ -14,7 +14,7 @@ export default function Home() {
   }
 
   function goToDrawBoard() {
-    navigator('/');
+    navigator('/draw-board');
   }
 
   return (
