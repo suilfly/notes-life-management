@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Home from '@/pages/Home.tsx';
-import Root from '@/pages/Root.tsx';
-import Editor from '@/pages/Editor.tsx';
-import Components from '@/pages/Components.tsx';
-import Board from '@/pages/Board.tsx';
+import Home from '@/pages/Home';
+import Root from '@/pages/Root';
+import Editor from '@/pages/Editor';
+import Components from '@/pages/Components';
+import Board from '@/pages/Board';
 
 export const router = createBrowserRouter([
   {
@@ -11,7 +11,7 @@ export const router = createBrowserRouter([
     element: <Root />,
     children: [
       {
-        path: 'home',
+        index: true,
         element: <Home />,
       },
       {

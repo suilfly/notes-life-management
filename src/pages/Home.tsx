@@ -1,6 +1,6 @@
 import { getTimeArea } from '@/utils/index.ts';
 import '@/assets/home.scoped.scss';
-import RecentliVisitCard from '@/components/RecentlyVisitCard/index.tsx';
+import RecentliVisitCard from '@/components/RecentlyVisitCard/index';
 import bg from '@/assets/img/visit-card-bg.jpg';
 import addIcon from '@/assets/img/add-page.svg';
 import recentlyIcon from '@/assets/img/time.svg';

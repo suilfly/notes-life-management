@@ -3,33 +3,37 @@ import searchIcon from '@/assets/img/search.svg';
 import homeIcon from '@/assets/img/home.svg';
 import settingIcon from '@/assets/img/setting.svg';
 import trashIcon from '@/assets/img/trash.svg';
-import componentIcon from '@/assets/img/component.svg';
 import { ReactSVG } from 'react-svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { NavObject, LeftNavProps } from './types';
-import { useCallback, useState } from 'react';
-
-const contents = [
-  {
-    name: '搜索',
-    icon: searchIcon,
-  },
-  {
-    name: '主页',
-    icon: homeIcon,
-    path: '/home',
-  },
-  {
-    name: '回收站',
-    icon: trashIcon,
-  },
-  {
-    name: '设置',
-    icon: settingIcon,
-  },
-];
+import { useCallback, useEffect, useState } from 'react';
 
 export default function LeftNav(props: LeftNavProps) {
+  const location = useLocation();
+  const [contents, setContent] = useState([
+    {
+      name: '搜索',
+      icon: searchIcon,
+      selected: false,
+    },
+    {
+      name: '主页',
+      icon: homeIcon,
+      path: '/',
+      selected: false,
+    },
+    {
+      name: '回收站',
+      icon: trashIcon,
+      selected: false,
+    },
+    {
+      name: '设置',
+      icon: settingIcon,
+      selected: false,
+    },
+  ]);
+
   const prop = Object.assign(
     {
       width: '248px',
@@ -55,8 +59,14 @@ export default function LeftNav(props: LeftNavProps) {
 
   function renderByType(menu: NavObject, index: number) {
     if (menu.path) {
+      const selectedClass =
+        location.pathname === menu.path ? 'nav-link-selected' : '';
       return (
-        <Link className="note-nav-item" to={menu.path} key={index}>
+        <Link
+          className={`note-nav-item ${selectedClass}`}
+          to={menu.path}
+          key={index}
+        >
           {renderMenuItem(menu)}
         </Link>
       );

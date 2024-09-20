@@ -6,8 +6,8 @@
     "lib": ["DOM", "ES2015"],
     "moduleResolution": "Node",
     "paths": {
-      "@/*": ["/src/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "index.tsx", "types/**/*"]
+  "include": ["src/**/*", "index", "types/**/*"]
 }

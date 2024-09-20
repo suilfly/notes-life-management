@@ -1,4 +1,4 @@
-import ToDo from '@/components/ToDo/index.tsx';
+import ToDo from '@/components/ToDo/index';
 
 export default function Components() {
   return (

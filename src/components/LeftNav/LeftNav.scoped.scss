@@ -33,6 +33,10 @@
     }
   }
 
+  .nav-link-selected {
+    background-color: var(--theme-nav-hover-background-color);
+  }
+
   .nav-wrap {
     position: absolute;
     top: 50%;

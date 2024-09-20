@@ -2,18 +2,21 @@ import { useEffect, useState } from 'react';
 import DragCreatingTool from '@/extensions/DragCreatingTool.js';
 import './style.scoped.scss';
 import * as go from 'gojs';
+import { getSystemColors } from '@/utils/systemColor';
 
 export default function DrawBoard() {
+  const systemColors = getSystemColors();
+
   let diagram: go.Diagram;
   const size = new go.Size(15, 15);
   const grid = new go.Panel('Grid', { gridCellSize: size }).add(
     new go.Shape('LineH', {
       strokeWidth: 0.5,
-      stroke: 'rgba(255,255,255,0.05)',
+      stroke: systemColors.gridLineColor,
     }),
     new go.Shape('LineV', {
       strokeWidth: 0.5,
-      stroke: 'rgba(255,255,255,0.05)',
+      stroke: systemColors.gridLineColor,
     })
   );
 
@@ -37,20 +40,30 @@ export default function DrawBoard() {
     diagram = new go.Diagram('diagram-div', {
       grid,
       'grid.visible': true,
-
-      nodeTemplate: new go.Node('Auto', {
-        minSize: new go.Size(60, 20),
-        resizable: true,
-      })
-        .bindTwoWay('desiredSize', 'size', go.Size.parse, go.Size.stringify)
-        .bindTwoWay('position', 'pos', go.Point.parse, go.Point.stringify)
-        // temporarily put selected nodes in Foreground layer
-        .bindObject('layerName', 'isSelected', (s) => (s ? 'Foreground' : ''))
-        .add(
-          new go.Shape('Rectangle').bind('fill', 'color'),
-          new go.TextBlock({ margin: 2 }).bind('text', 'color')
-        ),
     });
+
+    diagram.toolManager.resizingTool.handleArchetype = new go.Shape(
+      'Rectangle',
+      {
+        width: 5,
+        height: 5,
+        fill: systemColors.RectangleStroke,
+        cursor: 'n-resize',
+      }
+    );
+
+    diagram.nodeTemplate = new go.Node('Auto', {
+      minSize: new go.Size(60, 20),
+      resizable: true,
+      selectionAdorned: false,
+    })
+      .bindObject('layerName', 'isSelected', (s) => (s ? 'Foreground' : ''))
+      .add(
+        new go.Shape('RoundedRectangle', {
+          fill: 'transparent',
+          stroke: systemColors.RectangleStroke,
+        })
+      );
 
     diagram.toolManager.mouseMoveTools.insertAt(
       2,
@@ -61,18 +74,11 @@ export default function DrawBoard() {
           new go.Shape({
             name: 'SHAPE',
             fill: null,
-            stroke: 'red',
-            strokeWidth: 2,
+            stroke: systemColors.toolBoxColor,
+            strokeWidth: 0.4,
           })
         ),
-        archetypeNodeData: { color: null }, // initial properties shared by all nodes
-        insertPart: function (bounds) {
-          // method override of DragCreatingTool.insertPart
-          // use a different color each time
-          this.archetypeNodeData.color = go.Brush.randomColor();
-          // call the base method to do normal behavior and return its result
-          return DragCreatingTool.prototype.insertPart.call(this, bounds);
-        },
+        archetypeNodeData: {}, // initial properties shared by all nodes
       })
     );
   };

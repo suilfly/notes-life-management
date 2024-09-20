@@ -1,6 +1,6 @@
-import TextEditor from '@/components/TextEditor/index.tsx';
+import TextEditor from '@/components/TextEditor/index';
 import '@/assets/editor.scoped.scss';
-import EditorStyleBar from '@/components/EditorStyleBar/index.tsx';
+import EditorStyleBar from '@/components/EditorStyleBar/index';
 import { useState } from 'react';
 
 export default function Editor() {
